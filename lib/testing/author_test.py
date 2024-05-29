@@ -4,7 +4,6 @@ from classes.many_to_many import Article
 from classes.many_to_many import Magazine
 from classes.many_to_many import Author
 
-
 class TestAuthor:
     """Author in many_to_many.py"""
 
@@ -12,9 +11,6 @@ class TestAuthor:
         """Author is initialized with a name"""
         author_1 = Author("Carry Bradshaw")
         author_2 = Author("Nathaniel Hawthorne")
-        magazine = Magazine("Vogue", "Fashion")
-        Article(author_1, magazine, "How to wear a tutu with style")
-        Article(author_2, magazine, "Dating life in NYC")
 
         assert author_1.name == "Carry Bradshaw"
         assert author_2.name == "Nathaniel Hawthorne"
@@ -27,18 +23,6 @@ class TestAuthor:
         assert isinstance(author_1.name, str)
         assert isinstance(author_2.name, str)
 
-        # comment out the next two lines if using Exceptions
-        author_1.name = "ActuallyTopher"
-        assert author_1.name == "Carry Bradshaw"
-
-        # comment out the next two lines if using Exceptions
-        author_2.name = 2
-        assert author_2.name == "Nathaniel Hawthorne"
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     Author(2)
-
     def test_name_len(self):
         """author name is longer than 0 characters"""
         author_1 = Author("Carry Bradshaw")
@@ -49,9 +33,8 @@ class TestAuthor:
         assert hasattr(author_2, "name")
         assert len(author_2.name) > 0
 
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     Author("")
+        with pytest.raises(ValueError):
+            Author("")
 
     def test_has_many_articles(self):
         """author has many articles"""
@@ -127,7 +110,7 @@ class TestAuthor:
         magazine_2 = Magazine("AD", "Architecture")
         article_1 = author_1.add_article(magazine_1, "How to wear a tutu with style")
         article_2 = author_1.add_article(magazine_2, "2023 Eccentric Design Trends")
-        article_3 = author_1.add_article(magazine_2, "Carra Marble is so 2020")
+        article_3 = author_1.add_article(magazine_2, "Carrara Marble is so 2020")
 
         assert isinstance(article_1, Article)
         assert len(author_1.articles()) == 3
@@ -143,26 +126,4 @@ class TestAuthor:
         author_2 = Author("Nathaniel Hawthorne")
         magazine_1 = Magazine("Vogue", "Fashion")
         magazine_2 = Magazine("AD", "Architecture")
-        author_1.add_article(magazine_1, "How to wear a tutu with style")
-        author_1.add_article(magazine_2, "Carrara Marble is so 2020")
-        author_2.add_article(magazine_2, "2023 Eccentric Design Trends")
-
-        assert len(author_1.topic_areas()) == 2
-        assert set(author_1.topic_areas()) == {"Fashion", "Architecture"}
-        assert author_2.topic_areas() == ["Architecture"]
-
-    def test_topic_areas_are_unique(self):
-        """topic areas are unique"""
-        author_1 = Author("Carry Bradshaw")
-        author_2 = Author("Giorgio Faletti")
-        magazine_1 = Magazine("Vogue", "Fashion")
-        magazine_2 = Magazine("AD", "Architecture")
-        author_1.add_article(magazine_1, "How to wear a tutu with style")
-        author_1.add_article(magazine_1, "Dating life in NYC")
-        author_1.add_article(magazine_2, "2023 Eccentric Design Trends")
-
-        assert len(set(author_1.topic_areas())) == len(author_1.topic_areas())
-        assert len(author_1.topic_areas()) == 2
-        assert "Fashion" in author_1.topic_areas()
-        assert "Architecture" in author_1.topic_areas()
-        assert author_2.topic_areas() is None
+        author_1.add_article

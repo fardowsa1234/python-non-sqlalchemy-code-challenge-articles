@@ -1,4 +1,4 @@
-# Phase 3 Code Challenge: Articles - without SQLAlchemy (Updated)
+ # Phase 3 Code Challenge: Articles - without SQLAlchemy (Updated)
 
 In this code challenge, you will be working with a Magazine domain.
 

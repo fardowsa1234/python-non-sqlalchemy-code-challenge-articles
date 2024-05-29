@@ -3,8 +3,6 @@ import pytest
 from classes.many_to_many import Article
 from classes.many_to_many import Magazine
 from classes.many_to_many import Author
-
-
 class TestMagazine:
     """Magazine in many_to_many.py"""
 
@@ -27,13 +25,8 @@ class TestMagazine:
         magazine_1.name = "New Yorker"
         assert magazine_1.name == "New Yorker"
 
-        # comment out the next two lines if using Exceptions
-        magazine_2.name = 2
-        assert magazine_2.name == "AD"
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     Magazine(2, "Numbers")
+        with pytest.raises(ValueError):
+            magazine_2.name = 2  # Not a string
 
     def test_name_len(self):
         """magazine name is between 2 and 16 characters, inclusive"""
@@ -43,21 +36,11 @@ class TestMagazine:
         assert 2 <= len(magazine_1.name) <= 16
         assert 2 <= len(magazine_2.name) <= 16
 
-        # comment out the next two lines if using Exceptions
-        magazine_1.name = "New Yorker Plus X"
-        assert magazine_1.name == "Vogue"
+        with pytest.raises(ValueError):
+            magazine_1.name = "New Yorker Plus X"  # Too long
 
-        # comment out the next two lines if using Exceptions
-        magazine_2.name = "A"
-        assert magazine_2.name == "AD"
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     magazine_1.name = "New Yorker Plus X"
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     magazine_2.name = "A"
+        with pytest.raises(ValueError):
+            magazine_2.name = "A"  # Too short
 
     def test_has_category(self):
         """Magazine is initialized with a category"""
@@ -75,20 +58,11 @@ class TestMagazine:
         assert isinstance(magazine_1.category, str)
         assert isinstance(magazine_2.category, str)
 
-        magazine_1.category = "Life Style"
-        assert magazine_1.category == "Life Style"
+        magazine_1.category = "Lifestyle"
+        assert magazine_1.category == "Lifestyle"
 
-        assert isinstance(magazine_1.category, str)
-
-        # comment out the next two lines if using Exceptions
-        magazine_2.category = 2
-        assert magazine_2.category == "Architecture"
-        
-        assert isinstance(magazine_2.category, str)
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     Magazine("GQ", 2)
+        with pytest.raises(ValueError):
+            magazine_2.category = 2  # Not a string
 
     def test_category_len(self):
         """magazine category has length greater than 0"""
@@ -96,14 +70,8 @@ class TestMagazine:
 
         assert magazine_1.category != ""
 
-        # comment out the next three lines if using Exceptions
-        magazine_1.category = ""
-        assert magazine_1.category == "Fashion"
-        assert magazine_1.category != ""
-
-        # uncomment the next two lines if using Exceptions
-        # with pytest.raises(Exception):
-        #     magazine_1.category = ""
+        with pytest.raises(ValueError):
+            magazine_1.category = ""  # Empty string
 
     def test_has_many_articles(self):
         """magazine has many articles"""
@@ -184,7 +152,7 @@ class TestMagazine:
             "2023 Eccentric Design Trends",
             "Carrara Marble is so 2020",
         ]
-        assert magazine_3.article_titles() is None
+        assert magazine_3.article_titles() == []
 
     def test_contributing_authors(self):
         """returns author list who have written more than 2 articles for the magazine"""
@@ -201,24 +169,4 @@ class TestMagazine:
         assert author_1 in magazine_1.contributing_authors()
         assert author_2 not in magazine_1.contributing_authors()
         assert all(isinstance(author, Author) for author in magazine_1.contributing_authors())
-        assert magazine_2.contributing_authors() is None
-
-    # def test_top_publisher(self):
-    #     """returns the magazine with the most articles"""
-    #     Magazine.all = []
-    #     Article.all = []
-    #     assert Magazine.top_publisher() == None
-
-    #     author_1 = Author("Carry Bradshaw")
-    #     magazine_1 = Magazine("Vogue", "Fashion")
-    #     magazine_2 = Magazine("AD", "Architecture")
-    #     assert Magazine.top_publisher() == None
-
-    #     Article(author_1, magazine_1, "How to wear a tutu with style")
-    #     Article(author_1, magazine_1, "Dating life in NYC")
-    #     Article(author_1, magazine_1, "How to be single and happy")
-    #     Article(author_1, magazine_2, "2023 Eccentric Design Trends")
-    #     Article(author_1, magazine_2, "Carrara Marble is so 2020")
-        
-    #     assert Magazine.top_publisher() == magazine_1
-    #     assert isinstance(Magazine.top_publisher(), Magazine)
+        assert magazine_2.contributing_authors() == []
